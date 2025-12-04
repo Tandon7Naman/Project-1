@@ -1,0 +1,16 @@
+{
+  "name": "legal-operations-dashboard",
+  "version": "1.0.0",
+  "description": "Tandon Associates Legal Operations Dashboard",
+  "main": "index.html",
+  "scripts": {
+    "start": "python app.py",
+    "build": "echo 'Static files ready'",
+    "dev": "python app.py"
+  },
+  "keywords": ["legal", "dashboard", "operations"],
+  "author": "Tandon Associates",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}
