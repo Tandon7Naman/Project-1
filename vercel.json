@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "buildCommand": "echo 'Build complete'",
+  "outputDirectory": ".",
+  "public": true,
+  "env": {
+    "API_BASE_URL": "@api_base_url",
+    "JWT_SECRET_KEY": "@jwt_secret_key",
+    "FLASK_SECRET_KEY": "@flask_secret_key"
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "api/$1",
+      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    },
+    {
+      "src": "/(.*)\.json$",
+      "dest": "/public/$1.json"
+    },
+    {
+      "src": "/(.*)\.css$",
+      "dest": "/$1.css"
+    },
+    {
+      "src": "/(?!api)(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://*.vercel.app; frame-ancestors 'none';"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        }
+      ]
+    }
+  ]
+}
