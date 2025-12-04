@@ -299,6 +299,31 @@ def ratelimit_handler(e):
     logger.warning(f'Rate limit exceeded from {request.remote_addr}')
     return jsonify({'error': 'Too many requests'}), 429
 
+# ============ SECURITY HEADERS ============
+@app.after_request
+def set_security_headers(response):
+    '''Add security headers to all responses'''
+    # Content Security Policy
+    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' http://localhost:5000; frame-ancestors 'none';"
+    
+    # Prevent clickjacking
+    response.headers['X-Frame-Options'] = 'DENY'
+    
+    # Prevent MIME type sniffing
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    
+    # Enable XSS protection
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    
+    # Referrer policy
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    
+    # Permissions policy
+    response.headers['Permissions-Policy'] = 'geolocation=(), microphone=(), camera=(), payment=()'
+    
+    return response
+
+
 if __name__ == '__main__':
     # Create logs directory if it doesn't exist
     os.makedirs('logs', exist_ok=True)
